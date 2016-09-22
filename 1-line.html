@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>直线.矩形-轮廓stroke.填充fill</title>
+</head>
+<body>
+    <h3>canvas画直线</h3>
+    <div class="line">
+        <h3>一.canvas画直线,成矩形,填充和轮廓</h3>
+        <!-- 创建画布 -->
+        <canvas id="canvas-line" style="border:1px solid #f0f;background: #444;" width='230' height='180'>不支持的浏览器,默认不出现</canvas>
+
+        <h3>二.canvas画直线,修改线条粗细,端点样式,两线段链接出样式,绘制交点的方式</h3>
+        <canvas id="canvas-line-width" style="margin-left: 10px;background: #f0f;" width='100' height='100'>修改线条粗细</canvas>
+        <canvas id="canvas-line-lineCap" style="margin-left: 10px;background: #ff0;" width='100' height='100'>线条端点样式</canvas>
+        <canvas id="canvas-line-linejoin" style="margin-left: 10px;background: #0f0;" width='200' height='100'>两线段链接出样式</canvas>
+        <canvas id="canvas-line-miterLimit" style="margin-left: 10px;background: #00f;" width='230' height='100'>绘制交点的方式</canvas>
+    </div>
+    <script type="text/javascript">
+        //一. 获取元素,获取画布
+        var c=document.getElementById('canvas-line');
+        //二. 通过元素的getContext方法获取其上下文(context),创建context对象,获取可绘制的2d环境
+        var context= c.getContext('2d');
+
+
+        ///// 1.开始画矩形轮廓(stroke)
+        //给context对象设置轮廓颜色 context.strokeStyle='red',遵循css3背景色属性书写
+        context.strokeStyle='#0f0';
+
+        context.moveTo(20,6);//moveTo方法做起始点(坐标)
+        context.lineTo(200,6);//如果没有用moveTo方法规定自路径的起始点,则lineTo方法相当于规定子路径的起始点
+        context.lineTo(200,100);
+        context.lineTo(20,100);
+        context.lineTo(20,6);//画线,需要起始点和终点重合,才是闭合图形(如矩形)
+        context.stroke();//绘制轮廓
+
+        ///// 2.开始画矩形填充(fill)
+        //给context对象设置填充颜色 context.fillStyle='red';
+        context.fillStyle='red';
+
+        context.fillRect(26,18,170,70);//填充(起始点坐标,宽.高)
+
+        ///// 3.设置线条的粗细,端点样式,两线段链接出样式,绘制交点的方式:
+//        lineWidth = value ;//设置线条的粗细
+//        lineCap = type;    //设置端点样式
+//        lineJoin = type;   //设置连接处样式
+//        miterLimit = value;//设置绘制交点的方式
+
+        // A:设置线条的粗细: lineWidth = value ; 线宽即路径中心到两边的距离,该值必须是正数,默认1.0
+        var d=document.getElementById('canvas-line-width');
+        var contextw= d.getContext('2d');
+
+        contextw.strokeStyle='#00f';
+        contextw.lineWidth=7.4;//设置线条宽度
+        contextw.lineCap='round';//默认butt(平头),round(半圆头),square(方头)
+
+        contextw.moveTo(10,10);
+        contextw.lineTo(100,100);
+        contextw.stroke();
+
+        function draw(){
+            var dd=document.getElementById('canvas-line-lineCap');
+            var cans=dd.getContext('2d');
+            cans.strokeStyle='#f00';
+
+            var alineCap=['butt','round','square'];//默认butt(平头),round(半圆头),square(方头)
+            for(var i=0;i<alineCap.length;i++){
+                cans.lineWidth=7;
+                cans.lineCap=alineCap[i];
+                cans.beginPath();
+                cans.lineTo(5,5+30*i);
+                cans.lineTo(80,5+10*i);
+                cans.stroke();
+            }
+        }
+        //执行函数
+        window.onload=function(){
+            draw();
+        };
+
+        // B:设置两条线段连接处的样式( .lineJoin ):
+        function drawline(){
+            var dd=document.getElementById('canvas-line-linejoin');
+            var cans=dd.getContext('2d');
+            cans.strokeStyle='#f00';
+
+            var alineJoin=['miter','round','bevel'];//默认miter(直角),round(圆角),bevel(斜切角)
+            for(var i=0;i<alineJoin.length;i++){
+                cans.lineWidth=12;
+                cans.lineJoin=alineJoin[i];
+                cans.beginPath();
+                cans.lineTo(15+60*i,15);
+                cans.lineTo(40+60*i,15);
+                cans.lineTo(40+60*i,50);
+                cans.lineTo(2+70*i,50);
+                cans.stroke();
+            }
+        }
+        //执行函数
+            drawline();
+
+        // C:设置绘制交点的方式( .miterLimit ---只有在 .lineJoin='miter'才能生效):
+        var e=document.getElementById('canvas-line-miterLimit');
+        var can= e.getContext('2d');
+
+        can.strokeStyle='#fff';//轮廓颜色
+        can.lineWidth=4;
+        can.lineJoin='miter';
+        can.miterLimit=3*10;
+        can.beginPath();
+        can.moveTo(30,70);
+        can.lineTo(200,70);
+        can.lineTo(20,20);
+        can.stroke();
+
+
+    </script>
+</body>
+</html>
