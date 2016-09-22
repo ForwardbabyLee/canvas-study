@@ -68,7 +68,8 @@
             for(var i=0;i<alineCap.length;i++){
                 cans.lineWidth=7;
                 cans.lineCap=alineCap[i];
-                cans.beginPath();
+                cans.beginPath();// 开始绘制路径
+
                 cans.lineTo(5,5+30*i);
                 cans.lineTo(80,5+10*i);
                 cans.stroke();
