@@ -16,6 +16,10 @@
         <canvas id="canvas-line-lineCap" style="margin-left: 10px;background: #ff0;" width='100' height='100'>线条端点样式</canvas>
         <canvas id="canvas-line-linejoin" style="margin-left: 10px;background: #0f0;" width='200' height='100'>两线段链接出样式</canvas>
         <canvas id="canvas-line-miterLimit" style="margin-left: 10px;background: #00f;" width='230' height='100'>绘制交点的方式</canvas>
+
+        <h3>三.canvas画直三角形(和矩形轮廓对比),画圆形</h3>
+        <canvas id="canvas-tra" width="200" height="180" style="border:1px solid #f00;"></canvas>
+        <canvas id="canvas-arc" width="200" height="180" style="border:1px solid #f00;"></canvas>
     </div>
     <script type="text/javascript">
         //一. 获取元素,获取画布
@@ -34,6 +38,7 @@
         context.lineTo(20,100);
         context.lineTo(20,6);//画线,需要起始点和终点重合,才是闭合图形(如矩形)
         context.stroke();//绘制轮廓
+        //context.stroke(20,6,200-20,100-6);//等同上面的矩形轮廓--另外一种简单方式
 
         ///// 2.开始画矩形填充(fill)
         //给context对象设置填充颜色 context.fillStyle='red';
@@ -115,6 +120,17 @@
         can.lineTo(20,20);
         can.stroke();
 
+        ///// 4.开始画三角形(fill)
+        var f=document.getElementById('canvas-tra');
+        var contextf= f.getContext('2d');
+
+        contextf.fillStyle='#f33446';
+        contextf.beginPath();
+        contextf.moveTo(10,10);
+        contextf.lineTo(100,10);
+        contextf.lineTo(100,90);
+        contextf.lineTo(10,10);
+        contextf.fillRect();
 
     </script>
 </body>
