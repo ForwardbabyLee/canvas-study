@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>直线.矩形-轮廓stroke.填充fill</title>
+    <title>直线.矩形-轮廓stroke.填充fill,清除画布</title>
 </head>
 <body>
     <h3>canvas画直线</h3>
@@ -10,6 +10,7 @@
         <h3>一.canvas画直线,成矩形,填充和轮廓</h3>
         <!-- 创建画布 -->
         <canvas id="canvas-line" style="border:1px solid #f0f;background: #444;" width='230' height='180'>不支持的浏览器,默认不出现</canvas>
+        <input value="清除画布上指定位置" type="button" onclick="clearRecting();"/>
 
         <h3>二.canvas画直线,修改线条粗细,端点样式,两线段链接出样式,绘制交点的方式</h3>
         <canvas id="canvas-line-width" style="margin-left: 10px;background: #f0f;" width='100' height='100'>修改线条粗细</canvas>
@@ -20,6 +21,7 @@
         <h3>三.canvas画直三角形(和矩形轮廓对比),画圆形</h3>
         <canvas id="canvas-tra" width="200" height="180" style="border:1px solid #f00;"></canvas>
         <canvas id="canvas-arc" width="200" height="180" style="border:1px solid #f00;"></canvas>
+
     </div>
     <script type="text/javascript">
         //一. 获取元素,获取画布
@@ -45,6 +47,12 @@
         context.fillStyle='red';
 
         context.fillRect(26,18,170,70);//填充(起始点坐标,宽.高)
+
+//        4.清除画布上指定的矩形区域的所以图形:context.clearRect(x,y,width,height);
+        function clearRecting(){
+            context.clearRect(0,0,150,150);
+        }
+
 
         ///// 3.设置线条的粗细,端点样式,两线段链接出样式,绘制交点的方式:
 //        lineWidth = value ;//设置线条的粗细
@@ -131,6 +139,10 @@
         contextf.lineTo(100,90);
         contextf.lineTo(10,10);
         contextf.fillRect();
+
+
+
+
 
     </script>
 </body>
