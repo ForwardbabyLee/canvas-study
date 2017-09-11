@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas-绘制动画时钟</title>
+    <style>
+
+    </style>
+</head>
+<body onload="draw()">
+<p>requestAnimationFrame(callback)</p>
+<p>告诉浏览器你希望执行一个动画，并在重绘之前，请求浏览器执行一个特定的函数来更新动画。</p>
+<!--<p>指针走向不正确</p>-->
+
+<canvas id="canvas" width="300" height="300" style="background: salmon"></canvas>
+<script>
+    function draw() {
+        var now = new Date();
+        var ctx = document.getElementById('canvas').getContext('2d');
+        ctx.save();
+        ctx.clearRect(0,0,300,300);
+
+        // 时钟的外圈
+        ctx.translate(150,150);
+        ctx.scale(.75,.75);
+        ctx.rotate(Math.PI);
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 10;
+        ctx.lineCap = 'round';
+
+        ctx.beginPath();
+        ctx.arc(0,0,100,0,Math.PI*2,true);
+        ctx.closePath();
+        ctx.stroke();
+
+        ctx.save();
+        ctx.lineWidth = 5;
+        // hour
+        for (var i = 0; i < 12; i++) {
+            ctx.beginPath();
+            ctx.moveTo(0,68);
+            ctx.lineTo(0,86);
+            ctx.rotate(2*Math.PI/12);
+            ctx.stroke();
+        }
+        ctx.restore();
+
+        ctx.save();
+        ctx.lineWidth = 2;
+        // minute
+        for (i = 0; i < 60; i++) {
+            if (i%5!=0) {
+                ctx.beginPath(); // 未添加 开始和结束路径，图形是锯齿状
+                ctx.moveTo(0,74);
+                ctx.lineTo(0,80);
+                ctx.stroke();
+            }
+            ctx.rotate(2*Math.PI/60);
+        }
+        ctx.restore();
+
+        var hr = now.getHours(); //时
+        var min = now.getMinutes(); //分
+        var sec = now.getSeconds(); //秒
+        hr = hr >= 12 ? hr-12 : hr;
+
+        ctx.save();
+        ctx.lineWidth = 7;
+
+        // 指针－hour
+        ctx.strokeStyle = 'rgba(255,253,254,.7)';
+        // 动态指针
+        ctx.rotate((2*Math.PI/12)*hr + (2*Math.PI/60)*min + (Math.PI/21600)*sec);
+        ctx.beginPath();
+        ctx.moveTo(-12,0);
+        ctx.lineTo(46,0);
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.save();
+        ctx.lineWidth = 6;
+        // 指针－minute
+        ctx.strokeStyle = 'rgba(255,255,255,.8)';
+        ctx.rotate((2*Math.PI/60)*min + (2*Math.PI/3600)*sec);// ctx的移动、旋转等，一定要在beginPath之前，这样之后画的图形才会发生位移
+        ctx.beginPath();
+        ctx.moveTo(10,0);
+        ctx.lineTo(-58,0);
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.save();
+        // 指针－seconds
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'red';
+        ctx.rotate(sec*Math.PI/60);
+        ctx.rotate(1);
+        ctx.beginPath();
+        ctx.moveTo(18,0);
+        ctx.lineTo(-70,0);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore();
+
+//        ctx.save();  // 这个地方 添加
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(0,0,4,0,Math.PI*2,true);
+        ctx.stroke();
+        ctx.restore();
+
+        window.requestAnimationFrame(draw);
+    }
+    window.requestAnimationFrame(draw);
+
+
+    // clock()  绘制一个静态的时钟
+    function clock() {
+        var ctx = document.getElementById('canvas').getContext('2d');
+
+        // 时钟的外圈
+        ctx.translate(150,150);
+        ctx.scale(.75,.75);
+        ctx.rotate(0);
+        ctx.beginPath();
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 10;
+        ctx.lineCap = 'cap';
+        ctx.arc(0,0,100,0,Math.PI*2,true);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(20,20,20,1)";
+        ctx.arc(0,0,30,0,Math.PI*2,true);
+        ctx.fill();
+        ctx.closePath();
+        ctx.save();
+
+        ctx.lineWidth = 5;
+        // hour
+        for (var i = 0; i < 12; i++) {
+            ctx.beginPath();
+            ctx.moveTo(0,68);
+            ctx.lineTo(0,86);
+            ctx.rotate(2*Math.PI/12);
+            ctx.stroke();
+            ctx.closePath();
+        }
+        ctx.restore();
+
+        ctx.save();
+        ctx.lineWidth = 2;
+        // minute
+        for (var j = 0; j < 48; j++) {
+            ctx.beginPath(); // 未添加 开始和结束路径，图形是锯齿状
+            if (j%4!=0) {
+                ctx.moveTo(0,74);
+                ctx.lineTo(0,80);
+                ctx.stroke();
+            }
+            ctx.rotate(2*Math.PI/48);
+            ctx.closePath();
+        }
+        ctx.restore();
+
+        ctx.save();
+        ctx.lineWidth = 8;
+        ctx.lineCap = 'round';
+
+        // 指针－hour
+        ctx.strokeStyle = 'rgba(255,255,255,.8)';
+        ctx.rotate(Math.PI/4);
+        ctx.beginPath();
+        ctx.moveTo(16,0);
+        ctx.lineTo(-58,0);
+        ctx.closePath();
+        ctx.stroke();
+
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = 'green';
+        ctx.beginPath();
+        ctx.arc(0,0,4,0,Math.PI*2,true);
+        ctx.closePath();
+        ctx.stroke();
+
+        ctx.save();
+        // 指针－minute
+        ctx.strokeStyle = 'black';
+        ctx.rotate(Math.PI/2); // ctx的移动、旋转等，一定要在beginPath之前，这样之后画的图形才会发生位移
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.lineTo(-50,0);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.restore();
+
+        ctx.save();
+        // 指针－seconds
+        ctx.strokeStyle = 'red';
+        ctx.rotate(-26*Math.PI/40);
+        ctx.beginPath();
+        ctx.moveTo(18,0);
+        ctx.lineTo(-70,0);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.restore();
+
+    }
+
+</script>
+</body>
+</html>
